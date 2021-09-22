@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+            background-color: #e3e3e3 !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+
+        .mainBoxCss {
+            display: flex  !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+            width: 70% !important;
+            margin: auto !important;
+            height: 50vh !important;
+        }
+
+        .headingWelcome {
+            text-align: center !important
+        }
+
+        .btnConfirm {
+            padding: 10px 20px !important;
+            background-color: orange !important;
+            border: none !important;
+            color: white !important;
+        }
+
+        .mainBtnBox {
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+
+        .mainSubDiv {
+            position: absolute !important;
+            top: 130px !important;
+            background-color: white !important;
+            height: 500px !important;
+            width: 30% !important;
+            padding: 20px 40px !important
+        }
+        .boldFont{
+            font-weight: bold !important;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="mainBoxCss">
+        <div class="mainSubDiv">
+            <h1 class="headingWelcome"> Welcome </h1>
+            <p> Were excited To have you get started. First,You need to confirm your Account. </p>
+            <div class="mainBtnBox">
+                <button class="btnConfirm"> Confirm Address </button>
+            </div>
+            <div>
+                <p> <span class="boldFont">Name:</span>  {{firstName}} </p>
+                <p> <span class="boldFont">LastName:</span>  {{lastName}} </p>
+                <p> <span class="boldFont">Email:</span>  {{email}} </p>
+                <p> <span class="boldFont">Message:</span> {{description}} </p>
+                <p> <span class="boldFont">Phone Number:</span>  {{phoneNumber}} </p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

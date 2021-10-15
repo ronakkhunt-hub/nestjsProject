@@ -52,9 +52,6 @@ export class UserService {
   }
 
   async getOne(data: LoginUserDto, res: Response) {
-    this.userModel.aggregate([
-      match
-    ])
     let getUser = await this.userModel.findOne({
       email: data.email,
       password: data.password,
@@ -82,7 +79,9 @@ export class UserService {
       });
     }
 
-    const updateInfo = await this.userModel.findByIdAndUpdate(id, data);
+    const updateInfo = await this.userModel.findByIdAndUpdate(id, data, {
+      new: true,
+    });
     return res.status(200).json({
       message: 'User updated successfully',
       data: updateInfo,
@@ -115,7 +114,7 @@ export class UserService {
         lastName,
         email,
         phoneNumber,
-        description
+        description,
       },
     });
   }

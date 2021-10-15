@@ -10,17 +10,19 @@ import { UserService } from '../user/user.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from '../../schemas/user.schema';
 import { ProductSchema } from '../../schemas/product.schema';
+import { AdminSchema } from '../../schemas/admin_schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
       { name: 'Product', schema: ProductSchema },
+      { name: 'Admin', schema: AdminSchema },
     ]),
     PassportModule.register({ defaultStrategy: 'jwt', session: false }),
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '24hrs' },
+      signOptions: { expiresIn: '24h' },
     }),
     UserModule,
   ],

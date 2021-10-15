@@ -8,16 +8,18 @@ import {
   Post,
   Req,
   Res,
-  UploadedFile,
+  UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { RoleTypes } from '../authentication/constants';
 import { RolesGuard } from '../authentication/gaurd/role.gaurd';
 import { Roles } from '../authentication/gaurd/roles.decoder';
 import { UserService } from './user.service';
 import { Public } from '../authentication/gaurd/public.decoder';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import { storage } from '../authentication/upload.profile';
 
 @Controller('api')
 export class UserController {
@@ -34,6 +36,13 @@ export class UserController {
   @Get('getOne-user/:id')
   async getOneUser(@Param('id') id: string, @Res() res: Response) {
     return this.userService.getOneUser(id, res);
+  }
+
+  @Public()
+  @Post('video-merge')
+  @UseInterceptors(AnyFilesInterceptor(storage))
+  async videoMerge(@UploadedFiles() file: [], @Req() req: any, @Res() res: Response){
+     console.log(`file`, file)
   }
 
   @Public()

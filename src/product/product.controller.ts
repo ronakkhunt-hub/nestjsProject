@@ -9,8 +9,6 @@ import {
   Req,
   Res,
   UseGuards,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { ProductService } from '../product/product.service';
 import { Request, Response } from 'express';

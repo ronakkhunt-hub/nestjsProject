@@ -5,12 +5,14 @@ import { ProductService } from '../product/product.service';
 import { ProductSchema } from '../../schemas/product.schema';
 import { UserService } from '../user/user.service';
 import { UserSchema } from '../../schemas/user.schema';
+import { AdminSchema } from '../../schemas/admin_schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: 'Product', schema: ProductSchema },
       { name: 'User', schema: UserSchema },
+      { name: 'Admin', schema: AdminSchema },
     ]),
   ],
   controllers: [ProductController],

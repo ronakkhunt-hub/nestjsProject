@@ -13,11 +13,13 @@ import { LoginUserDto } from '../authentication/dto/login.user.dto';
 import { RegisterUserDto, UpdateUserDto } from '../user/dto/create.user.dto';
 import { join } from 'path';
 import { match } from 'assert';
+import { Admin, AdminDocument } from '../../schemas/admin_schema';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<UserDocument>,
+    @InjectModel('Admin') private readonly adminModel: Model<AdminDocument>,
     private mailerService: MailerService,
   ) {}
 
@@ -121,6 +123,15 @@ export class UserService {
 
   async validateUser(id: string): Promise<User | boolean> {
     const user = await this.userModel.findById(id);
+    if (user) {
+      return user;
+    } else {
+      return false;
+    }
+  }
+
+  async validateUserAd(id: string): Promise<Admin | boolean> {
+    const user = await this.adminModel.findById(id);
     if (user) {
       return user;
     } else {

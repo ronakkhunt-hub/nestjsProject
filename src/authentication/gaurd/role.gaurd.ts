@@ -30,12 +30,11 @@ export class RolesGuard implements CanActivate {
       throw new Error('Unauthorized');
     }
 
-    let user: any = {}
+    let user: any = {};
     user = await this.userModel.findById(request.user._id);
-    if(!user){
-    user = await this.adminModel.findById(request.user._id);
+    if (!user) {
+      user = await this.adminModel.findById(request.user._id);
     }
-    console.log(`user`, user)
 
     if (user) {
       if (roles && roles.includes(user.role)) {

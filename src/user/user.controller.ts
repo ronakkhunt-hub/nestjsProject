@@ -51,6 +51,7 @@ export class UserController {
     return this.userService.getOne(req.body, res);
   }
 
+  @Roles(RoleTypes.Administrator)
   @Get('get-user')
   async getUser(@Res() res: Response) {
     return this.userService.getUser(res);

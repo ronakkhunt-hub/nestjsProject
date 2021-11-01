@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, Req } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Response } from 'express';
@@ -57,8 +57,7 @@ export class AuthenticationService {
     }
   }
 
-  async loginAdmin(user: any, res: Response){
-    console.log(`user`, user)
+  async loginAdmin(user: any, res: Response) {
     const loginUser = await this.adminModel.findOne({
       email: user.email,
       password: user.password,

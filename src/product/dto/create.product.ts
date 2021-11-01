@@ -16,6 +16,6 @@ export class CreateProductDto {
   @IsOptional()
   rating: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   image: string;
 }

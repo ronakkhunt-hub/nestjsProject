@@ -12,6 +12,14 @@ export const editFileName = (req, file, callback) => {
 };
 
 export const imageFileFilter = (req, file, callback) => {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+        req.fileValidationError = 'Only Image files are allowed!';
+        return callback(null, false);
+    }
+    callback(null, true);
+};
+
+export const videoFileFilter = (req, file, callback) => {
     if (!file.originalname.match(/\.(mp4|avi|3gp)$/)) {
         req.fileValidationError = 'Only video files are allowed!';
         return callback(null, false);
@@ -25,4 +33,12 @@ export const storage = {
         filename: editFileName,
     }),
     fileFilter: imageFileFilter,
+}
+
+export const storage2 = {
+    storage: diskStorage({
+        destination: './assets',
+        filename: editFileName,
+    }),
+    fileFilter: videoFileFilter,
 }

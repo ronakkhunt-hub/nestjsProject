@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  HttpStatus,
-  Injectable,
-  Res,
-} from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Response } from 'express';
 import { Model } from 'mongoose';
@@ -11,8 +6,9 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { User, UserDocument } from '../../schemas/user.schema';
 import { LoginUserDto } from '../authentication/dto/login.user.dto';
 import { RegisterUserDto, UpdateUserDto } from '../user/dto/create.user.dto';
-import { join } from 'path';
-import { match } from 'assert';
+import * as path from 'path';
+import vidoeStitch from 'video-stitch';
+import ffmpeg_static from 'ffmpeg-static';
 import { Admin, AdminDocument } from '../../schemas/admin_schema';
 
 @Injectable()
@@ -72,6 +68,42 @@ export class UserService {
     });
   }
 
+  async videoMerge(req: any, file: any[], res: Response) {
+    if (file.length > 0) {
+      let merger = vidoeStitch.merge;
+      for (let i = 0; i < file.length; i++) {
+        merger({
+          ffmpeg_path: ffmpeg_static,
+        })
+          .original({
+            duration: 30000,
+            startTime: 0,
+            fileName: path.join(__dirname, 'assets', 'videoplayback-3e110.mp4'),
+          })
+          .clips([
+            {
+              startTime: 5000,
+              duration: 5000,
+              fileName: path.join(__dirname, 'assets', 'tailor-5-10.mp4'),
+            },
+            {
+              startTime: 20000,
+              duration: 5000,
+              fileName: path.join(__dirname, 'assets', 'tailor-20-25.mp4'),
+            },
+          ])
+          .merge()
+          .then((finalOutput) => {
+            console.log('finalOutput: ', finalOutput);
+          })
+          .catch((err) => {
+            console.log(`err`, err);
+          });
+          break;
+      }
+    }
+  }
+
   async updateUser(params: { id: string; data: UpdateUserDto }, res: Response) {
     const { id, data } = params;
     const userInfo = await this.userModel.findById(id);
@@ -110,7 +142,7 @@ export class UserService {
     return await this.mailerService.sendMail({
       to: email,
       from: process.env.SMTP_EMAIL,
-      template: join(__dirname, '../../../assets/template.hbs'),
+      template: path.join(__dirname, '../../../assets/template.hbs'),
       context: {
         firstName,
         lastName,

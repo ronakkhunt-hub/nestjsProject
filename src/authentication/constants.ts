@@ -4,9 +4,5 @@ export const jwtConstants = {
   
   export const RoleTypes = {
     Administrator: "Administrator",
-    Chairman: "Chairman",
-    ViceChairman: "ViceChairman",
-    Secretary: "Secretary",
-    Treasurer: "Treasurer",
     Member: "Member"
 }

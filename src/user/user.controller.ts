@@ -19,17 +19,14 @@ import { Roles } from '../authentication/gaurd/roles.decoder';
 import { UserService } from './user.service';
 import { Public } from '../authentication/gaurd/public.decoder';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
-import { storage } from '../authentication/upload.profile';
+import { storage, storage2 } from '../authentication/upload.profile';
 
 @Controller('api')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('create-user')
-  async registerUser(
-    @Req() req: any,
-    @Res() res: Response,
-  ) {
+  async registerUser(@Req() req: any, @Res() res: Response) {
     return this.userService.createUser(req.body, res);
   }
 
@@ -40,9 +37,15 @@ export class UserController {
 
   @Public()
   @Post('video-merge')
-  @UseInterceptors(AnyFilesInterceptor(storage))
-  async videoMerge(@UploadedFiles() file: [], @Req() req: any, @Res() res: Response){
-     console.log(`file`, file)
+  @UseInterceptors(AnyFilesInterceptor(storage2))
+  async videoMerge(
+    @UploadedFiles() file: [],
+    @Req() req: any,
+    @Res() res: Response,
+  ) {
+    console.log(`file`, file)
+    console.log(`req`, req.body)
+    return this.userService.videoMerge(req.body, file, res)
   }
 
   @Public()
@@ -68,16 +71,16 @@ export class UserController {
     return this.userService.updateUser({ id, data: req.body }, res);
   }
 
-  @UseGuards(RolesGuard)
-  @Roles(RoleTypes.Administrator)
+  // @UseGuards(RolesGuard)
+  // @Roles(RoleTypes.Administrator)
   @Delete('delete-user/:id')
   async deleteUser(@Param('id') id: string, @Res() res: Response) {
-    return this.userService.deleteUser( id, res );
+    return this.userService.deleteUser(id, res);
   }
 
   @Public()
   @Post('sendEmail')
-  async sendEmail(@Req() req: any, @Res() res: Response){
-    return this.userService.sendEmail(req.body, res)
+  async sendEmail(@Req() req: any, @Res() res: Response) {
+    return this.userService.sendEmail(req.body, res);
   }
 }

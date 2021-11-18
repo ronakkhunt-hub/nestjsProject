@@ -30,7 +30,7 @@ export class ProductService {
     if (getProduct.length) {
       res.status(HttpStatus.OK).json({
         message: 'Product get successfully',
-        data: getProduct,
+        data: getProduct
       });
     } else {
       res.status(HttpStatus.BAD_REQUEST).json({

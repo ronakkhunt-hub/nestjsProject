@@ -1,5 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Response } from 'express';
 import { Model } from 'mongoose';
@@ -25,6 +26,8 @@ export class AuthenticationService {
         message: 'Email already exist',
       });
     } else {
+      const securePassword = await bcrypt.hash(user.password, 12);
+      user.password = securePassword;
       user.profile = file.filename;
       const registerUser = await this.userModel.create(user);
       if (registerUser) {
@@ -37,18 +40,23 @@ export class AuthenticationService {
   }
 
   async login(user: LoginUserDto, res: Response) {
-    const loginUser = await this.userModel.findOne({
-      email: user.email,
-      password: user.password,
-    });
+    const loginUser = await this.userModel.findOne({ email: user.email });
     if (loginUser) {
-      const payload: JwtPayload = loginUser.id;
-      const token: string = this.jwtService.sign({ id: payload });
-      res.status(HttpStatus.OK).json({
-        message: 'Login successfully',
-        data: loginUser,
-        token: token,
-      });
+      const valid = await bcrypt.compare(user.password, loginUser.password);
+      if (valid) {
+        const payload: JwtPayload = loginUser.id;
+        const token: string = this.jwtService.sign({ id: payload });
+        res.status(HttpStatus.OK).json({
+          message: 'Login successfully',
+          data: loginUser,
+          token: token,
+        });
+      }else{
+        res.status(HttpStatus.BAD_REQUEST).json({
+          statusCode: HttpStatus.NOT_FOUND,
+          message: 'Invalid login credentials',
+        });
+      }
     } else {
       res.status(HttpStatus.BAD_REQUEST).json({
         statusCode: HttpStatus.NOT_FOUND,

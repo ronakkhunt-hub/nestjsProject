@@ -3,7 +3,7 @@ import { AuthenticationService } from './authentication.service';
 import { Request, Response } from 'express';
 import { Public } from './gaurd/public.decoder';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { storage } from './upload.profile';
+import { storage } from '../utils/upload.profile';
 
 @Controller('auth')
 export class AuthenticationController {

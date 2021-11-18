@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { config } from 'dotenv';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { join } from 'path';
+import { CartModule } from './cart/cart.module';
 config();
 
 const path = join(__dirname, '../../assets');
@@ -44,6 +45,7 @@ const path = join(__dirname, '../../assets');
     ProductModule,
     AuthenticationModule,
     UserModule,
+    CartModule
   ],
   providers: [
     {

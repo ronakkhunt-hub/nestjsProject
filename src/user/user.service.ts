@@ -1,5 +1,6 @@
 import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as bcrypt from 'bcrypt' 
 import { Response } from 'express';
 import { Model } from 'mongoose';
 import { MailerService } from '@nestjs-modules/mailer';
@@ -10,12 +11,15 @@ import * as path from 'path';
 import vidoeStitch from 'video-stitch';
 import ffmpeg_static from 'ffmpeg-static';
 import { Admin, AdminDocument } from '../../schemas/admin_schema';
+import { generateRandomPassword } from '../utils/constants';
+import { sendMailerService } from '../utils/sendMail';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<UserDocument>,
     @InjectModel('Admin') private readonly adminModel: Model<AdminDocument>,
+    private mailService: sendMailerService,
     private mailerService: MailerService,
   ) {}
 
@@ -28,7 +32,11 @@ export class UserService {
           message: 'Email already exist',
         });
       } else {
+        const password = generateRandomPassword();
+        const hashedPassword = await bcrypt.hash(password, 12)
+        data.password = hashedPassword; 
         const registerUser = await this.userModel.create(data);
+        await this.mailService.sendMailForStudent(data.email, { loginId: Date.now(), password: password })
         if (registerUser) {
           res.status(HttpStatus.OK).json({
             message: 'User created successfully',

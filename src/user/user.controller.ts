@@ -13,13 +13,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { RoleTypes } from '../authentication/constants';
+import { RoleTypes } from '../utils/constants';
 import { RolesGuard } from '../authentication/gaurd/role.gaurd';
 import { Roles } from '../authentication/gaurd/roles.decoder';
 import { UserService } from './user.service';
 import { Public } from '../authentication/gaurd/public.decoder';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
-import { storage, storage2 } from '../authentication/upload.profile';
+import { storage, storage2 } from '../utils/upload.profile';
 
 @Controller('api')
 export class UserController {

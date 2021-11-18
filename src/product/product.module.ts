@@ -6,6 +6,7 @@ import { ProductSchema } from '../../schemas/product.schema';
 import { UserService } from '../user/user.service';
 import { UserSchema } from '../../schemas/user.schema';
 import { AdminSchema } from '../../schemas/admin_schema';
+import { sendMailerService } from '../utils/sendMail';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { AdminSchema } from '../../schemas/admin_schema';
     ]),
   ],
   controllers: [ProductController],
-  providers: [ProductService, UserService],
+  providers: [ProductService, UserService, sendMailerService],
   exports: [UserService]
 })
 export class ProductModule {}

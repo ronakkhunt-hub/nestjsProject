@@ -5,12 +5,13 @@ import { AuthenticationController } from './authentication.controller';
 import { JwtStrategy } from './strategy/local.strategy';
 import { UserModule } from '../user/user.module';
 import { PassportModule } from '@nestjs/passport';
-import { jwtConstants } from './constants';
+import { jwtConstants } from '../utils/constants';
 import { UserService } from '../user/user.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from '../../schemas/user.schema';
 import { ProductSchema } from '../../schemas/product.schema';
 import { AdminSchema } from '../../schemas/admin_schema';
+import { sendMailerService } from '../utils/sendMail';
 
 @Module({
   imports: [
@@ -27,6 +28,6 @@ import { AdminSchema } from '../../schemas/admin_schema';
     UserModule,
   ],
   controllers: [AuthenticationController],
-  providers: [AuthenticationService, JwtStrategy, UserService],
+  providers: [AuthenticationService, JwtStrategy, UserService, sendMailerService],
 })
 export class AuthenticationModule {}

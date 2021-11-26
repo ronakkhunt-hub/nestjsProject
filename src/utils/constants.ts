@@ -1,12 +1,19 @@
 import { shuffle } from 'lodash';
 
-export const jwtConstants = {
-    secret: 'secretKey',
-  };
-  
-  export const RoleTypes = {
-    Administrator: "Administrator",
-    Member: "Member"
+export const RoleTypes = {
+  Administrator: 'Administrator',
+  Member: 'Member',
+};
+
+export function generateRandomId() {
+  const rand = ['1234567890', 'QWERTYUIOPASDFGHJKLZXCVBNM'];
+  let id = '';
+  for (const r of rand) {
+    for (let i = 0; i < 4; i++) {
+      id += r[Math.floor(Math.random() * r.length)];
+    }
+  }
+  return shuffle(id).join('');
 }
 
 export function generateRandomPassword() {

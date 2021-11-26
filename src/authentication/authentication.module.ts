@@ -5,7 +5,6 @@ import { AuthenticationController } from './authentication.controller';
 import { JwtStrategy } from './strategy/local.strategy';
 import { UserModule } from '../user/user.module';
 import { PassportModule } from '@nestjs/passport';
-import { jwtConstants } from '../utils/constants';
 import { UserService } from '../user/user.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from '../../schemas/user.schema';
@@ -22,7 +21,7 @@ import { sendMailerService } from '../utils/sendMail';
     ]),
     PassportModule.register({ defaultStrategy: 'jwt', session: false }),
     JwtModule.register({
-      secret: jwtConstants.secret,
+      secret: process.env.SECRET_KEY,
       signOptions: { expiresIn: '24h' },
     }),
     UserModule,

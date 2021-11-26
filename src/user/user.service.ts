@@ -11,7 +11,7 @@ import * as path from 'path';
 import vidoeStitch from 'video-stitch';
 import ffmpeg_static from 'ffmpeg-static';
 import { Admin, AdminDocument } from '../../schemas/admin_schema';
-import { generateRandomPassword } from '../utils/constants';
+import { generateRandomId, generateRandomPassword } from '../utils/constants';
 import { sendMailerService } from '../utils/sendMail';
 
 @Injectable()
@@ -35,8 +35,10 @@ export class UserService {
         const password = generateRandomPassword();
         const hashedPassword = await bcrypt.hash(password, 12)
         data.password = hashedPassword; 
+        const loginId = generateRandomId()
+        data.loginId = loginId
         const registerUser = await this.userModel.create(data);
-        await this.mailService.sendMailForStudent(data.email, { loginId: Date.now(), password: password })
+        await this.mailService.sendMailForStudent(data.email, { loginId: loginId, password: password })
         if (registerUser) {
           res.status(HttpStatus.OK).json({
             message: 'User created successfully',
@@ -51,17 +53,6 @@ export class UserService {
 
   async getOneUser(id: string, res: Response) {
     let getUser = await this.userModel.findById(id);
-    return res.status(HttpStatus.OK).json({
-      message: 'User get successfully',
-      data: getUser,
-    });
-  }
-
-  async getOne(data: LoginUserDto, res: Response) {
-    let getUser = await this.userModel.findOne({
-      email: data.email,
-      password: data.password,
-    });
     return res.status(HttpStatus.OK).json({
       message: 'User get successfully',
       data: getUser,

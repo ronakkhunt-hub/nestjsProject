@@ -19,15 +19,16 @@ import { Roles } from '../authentication/gaurd/roles.decoder';
 import { UserService } from './user.service';
 import { Public } from '../authentication/gaurd/public.decoder';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
-import { storage, storage2 } from '../utils/upload.profile';
+import { storage2 } from '../utils/upload.profile';
+import { RegisterUserDto, UpdateUserDto } from './dto/create.user.dto';
 
 @Controller('api')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('create-user')
-  async registerUser(@Req() req: any, @Res() res: Response) {
-    return this.userService.createUser(req.body, res);
+  async registerUser(@Body() user: RegisterUserDto, @Res() res: Response) {
+    return this.userService.createUser(user, res);
   }
 
   @Get('getOne-user/:id')
@@ -40,18 +41,10 @@ export class UserController {
   @UseInterceptors(AnyFilesInterceptor(storage2))
   async videoMerge(
     @UploadedFiles() file: [],
-    @Req() req: any,
+    @Body() req: any,
     @Res() res: Response,
   ) {
-    console.log(`file`, file)
-    console.log(`req`, req.body)
     return this.userService.videoMerge(req.body, file, res)
-  }
-
-  @Public()
-  @Post('getUser')
-  async getOne(@Req() req: any, @Res() res: Response) {
-    return this.userService.getOne(req.body, res);
   }
 
   @Roles(RoleTypes.Administrator)
@@ -65,14 +58,14 @@ export class UserController {
   @Patch('update-user/:id')
   async updateUser(
     @Param('id') id: string,
-    @Req() req: any,
+    @Body() user: UpdateUserDto,
     @Res() res: Response,
   ) {
-    return this.userService.updateUser({ id, data: req.body }, res);
+    return this.userService.updateUser({ id, data: user }, res);
   }
 
-  // @UseGuards(RolesGuard)
-  // @Roles(RoleTypes.Administrator)
+  @UseGuards(RolesGuard)
+  @Roles(RoleTypes.Administrator)
   @Delete('delete-user/:id')
   async deleteUser(@Param('id') id: string, @Res() res: Response) {
     return this.userService.deleteUser(id, res);

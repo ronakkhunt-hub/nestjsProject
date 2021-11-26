@@ -31,6 +31,9 @@ export class User {
   @Prop({ default: 'User' })
   role: string
 
+  @Prop()
+  loginId: string;
+
   @Prop({ default: new Date() })
   createAt: string
 }

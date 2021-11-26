@@ -6,13 +6,11 @@ import { MainModule } from './main.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(MainModule);
   app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-    }),
+    new ValidationPipe(),
   );
   app.enableCors();
-  await app.listen(3002, () => {
-    console.log(`3002 running`);
+  await app.listen(process.env.PORT, () => {
+    console.log(`${process.env.PORT} runnings`);
   });
 }
 bootstrap();

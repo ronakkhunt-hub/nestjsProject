@@ -6,14 +6,11 @@ import {
   Param,
   Patch,
   Post,
-  Req,
   Res,
   UseGuards,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { ProductService } from '../product/product.service';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { RolesGuard } from '../authentication/gaurd/role.gaurd';
 import { Roles } from '../authentication/gaurd/roles.decoder';
 import { RoleTypes } from '../utils/constants';
@@ -24,9 +21,8 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post('create-product')
-  // @UseGuards(RolesGuard)
-  // @Roles(RoleTypes.Administrator)
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UseGuards(RolesGuard)
+  @Roles(RoleTypes.Administrator)
   async createProduct(@Body() product: CreateProductDto, @Res() res: Response) {
     return this.productService.create(product, res);
   }

@@ -45,7 +45,7 @@ export class AuthenticationService {
       const valid = await bcrypt.compare(user.password, loginUser.password);
       if (valid) {
         const payload: JwtPayload = loginUser.id;
-        const token: string = this.jwtService.sign({ id: payload });
+        const token: string = this.jwtService.sign({ id: payload }, { secret: process.env.SECRET_KEY});
         res.status(HttpStatus.OK).json({
           message: 'Login successfully',
           data: loginUser,

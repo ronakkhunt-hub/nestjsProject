@@ -25,6 +25,9 @@ export class RegisterUserDto {
 
   @IsOptional()
   role: string;
+
+  @IsOptional()
+  loginId: string
 }
 
 export class UpdateUserDto {

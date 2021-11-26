@@ -64,9 +64,9 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Stay in touch
 
-- Author - [Ronak Patel](https://localhost:3000)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Author - [Ronak Patel](http://localhost:3000)
+- Website - [http://localhost:3000](http://localhost:3000/)
+<!-- - Twitter - [@nestframework](https://twitter.com/nestframework) -->
 
 ## License
 
